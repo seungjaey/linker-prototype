@@ -1,6 +1,6 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { kv } from "@/modules/database";
-import { isUndefined, head } from "lodash";
+import { isUndefined, head, isArray, isString } from "lodash";
 
 const LinkHashPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { message } = props;
@@ -11,10 +11,23 @@ const LinkHashPage = (props: InferGetServerSidePropsType<typeof getServerSidePro
   );
 };
 
+const getFirstQueryParam = (data?: string | string[]): string => {
+  if (isUndefined(data)) {
+    return 'INVALID';
+  }
+  if (isArray(data)) {
+    return head(data) as string;
+  }
+  if (isString(data)) {
+    return data;
+  }
+  return 'INVALID';
+}
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   const { linkHash } = query;
-  const firstLinkHash = head(linkHash);
+  const firstLinkHash = getFirstQueryParam(linkHash);
   if (isUndefined(firstLinkHash)) {
     return {
       props: {
@@ -23,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const targetLink = await kv.get(firstLinkHash);
-  console.log(`DEBUG : TARGET_LINK : ${targetLink}`);
+  console.log(`DEBUG : TARGET_LINK : ${firstLinkHash} : ${targetLink}`);
   return {
     redirect: {
       permanent: false,
