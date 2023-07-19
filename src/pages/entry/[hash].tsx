@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!targetLink) {
     return {
       props: {
-        message: 'link not found',
+        message: 'link not found 2',
       },
     };
   }
