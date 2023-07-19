@@ -59,6 +59,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { linkHash } = query;
   const firstLinkHash = getFirstQueryParam(linkHash);
   const { isAndroid, isIOS } = detect.getSelectorsByUserAgent(headers['user-agent'] || '');
+  console.log('check linkhash');
+  console.log(firstLinkHash);
   if (isUndefined(firstLinkHash)) {
     return {
       props: {
