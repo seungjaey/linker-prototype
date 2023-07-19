@@ -54,10 +54,10 @@ const getFirstQueryParam = (data?: string | string[]): string => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { query, req } = context;
+  const { query, req, params } = context;
   const { headers } = req;
-  const { linkHash } = query;
-  const firstLinkHash = getFirstQueryParam(linkHash);
+  const { hash } = query;
+  const firstLinkHash = getFirstQueryParam(hash);
   const { isAndroid, isIOS } = detect.getSelectorsByUserAgent(headers['user-agent'] || '');
   console.log('check linkhash');
   console.log(firstLinkHash);
