@@ -5,6 +5,16 @@ import { kv } from '@/modules/database';
 
 import { TARGET_BASE_HOST, IOS_PREFIX, AOS_PREFIX } from '@/configs';
 
+const createAndroidIntentUrl = () => {
+  const intentURI = [
+    'intent://open#Intent',
+    'scheme=kurly',
+    'package=com.dbs.kurly.m2.beta',
+    'S.browser_fallback_url=https%3A%2F%2Fwww.kurly.com',
+    'end',
+  ].join(';');
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
   const { targetUrl } = body;
