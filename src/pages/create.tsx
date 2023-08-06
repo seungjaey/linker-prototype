@@ -1,7 +1,8 @@
 import { IOS_PREFIX, AOS_PREFIX, TARGET_BASE_HOST } from '@/configs';
-import { RefObject, useRef, useState } from 'react';
-import { chain, get, isEmpty, isNull } from 'lodash';
+import { useRef, useState } from 'react';
+import { chain, get, isEmpty } from 'lodash';
 import axios from 'axios';
+import { InformationCircle } from '../icons/information-circle';
 
 // AOS fallback location.href = 'https://play.google.com/store/apps/details?id=com.dbs.kurly.m2';
 interface FormData {
@@ -35,6 +36,15 @@ const CreateLinkPage = () => {
     const { data } = await axios.post('/api/v2/create', formData);
     setUrl(data?.result);
   };
+  const handleCopyClipBoard = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('클립보드에 링크가 복사되었습니다.');
+    } catch (e) {
+      alert('복사에 실패하였습니다');
+    }
+  };
+
   return (
     <div className="md:container md:mx-auto p-4">
       {!isEmpty(url) ? <div>{url}</div> : null}
@@ -44,6 +54,27 @@ const CreateLinkPage = () => {
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
+            {url ? (
+              <div className="my-5">
+                <span> 미리보기 url : {url} </span>
+                <button
+                  type="button"
+                  onClick={handleCopyClipBoard}
+                  className="rounded-md bg-purple-600 px-3 py-1 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  복사하기
+                </button>
+                <div className="flex">
+                  <InformationCircle />
+                  <span className="ml-3 text-rose-700"> main 페이지가 보일 시 주소를 다시 확인해주세요!</span>
+                </div>
+              </div>
+            ) : null}
+            {typeof window !== 'undefined' && url ? (
+              <iframe src={url} width="100%" height="500px">
+                <p>사용 중인 브라우저는 iframe을 지원하지 않습니다.</p>
+              </iframe>
+            ) : null}
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="col-span-full">
                 <label htmlFor="webAddr" className="block text-sm font-medium leading-6 text-gray-900">
