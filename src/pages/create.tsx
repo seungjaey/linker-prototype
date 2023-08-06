@@ -2,6 +2,7 @@ import { IOS_PREFIX, AOS_PREFIX, TARGET_BASE_HOST } from '@/configs';
 import { useRef, useState } from 'react';
 import { chain, get, isEmpty } from 'lodash';
 import axios from 'axios';
+import { InformationCircle } from '../icons/information-circle';
 
 // AOS fallback location.href = 'https://play.google.com/store/apps/details?id=com.dbs.kurly.m2';
 interface FormData {
@@ -63,6 +64,10 @@ const CreateLinkPage = () => {
                 >
                   복사하기
                 </button>
+                <div className="flex">
+                  <InformationCircle />
+                  <span className="ml-3 text-rose-700"> main 페이지가 보일 시 주소를 다시 확인해주세요!</span>
+                </div>
               </div>
             ) : null}
             {typeof window !== 'undefined' && url ? (
